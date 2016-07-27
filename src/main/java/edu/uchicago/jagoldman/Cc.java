@@ -6,6 +6,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -22,10 +23,11 @@ public class Cc {
     private ImageView imgView; // Value injected by FXMLLoader
     private Image img, imgUndo;
     private int mPointTemp;
-   // private boolean bFirstUndo = true;
+    private boolean bFirstUndo = true;
+    boolean bSepia = false;
     public static final int MAX_UNDOS = 100;
 
-    private static List<Image> backImages;
+    private static ArrayList<Image> backImages;
 
 
 
@@ -41,7 +43,7 @@ public class Cc {
     public static Cc getInstance(){
         if(stateManager == null){
             stateManager = new Cc();
-            backImages = new LinkedList<>();
+            backImages = new ArrayList<>();
         }
         return stateManager;
     }
@@ -116,31 +118,67 @@ public class Cc {
         return img;
     }
 
-
-    public void undo(){
-
-        if (imgUndo != null){
-            this.img = imgUndo;
-            imgView.setImage(img);
-        }
+    public void setImg(Image img) {
+        this.img = img;
+        bFirstUndo = true;
 
     }
 
 
-    public void redo(){
+    public void undo(){
 
-   }
-
-
-
-    public void setImageAndRefreshView(Image img){
-        imgUndo = this.img;
-        this.img = img;
+        if (bFirstUndo) {
+            mPointTemp = backImages.size() - 1;
+        }
+        if (mPointTemp >= 0) {
+            bFirstUndo = false;
+            mPointTemp--;
+            this.img = backImages.get(mPointTemp);
+        }
         imgView.setImage(img);
 
 
     }
 
+
+    public void redo(){
+        if (mPointTemp < backImages.size()-1) {
+            mPointTemp++;
+            this.img = backImages.get(mPointTemp);
+            imgView.setImage(img);
+        }
+
+
+   }
+   public void reOpenLast() {
+       if (img != null) {
+           imgView.setImage(img);
+           bFirstUndo = true;
+       }
+   }
+
+
+
+    public void setImageAndRefreshView(Image img){
+        addBackImages(img);
+        System.out.println(img);
+
+        this.img = img;
+        imgView.setImage(img);
+        bFirstUndo = true;
+
+
+    }
+    public void addBackImages(Image imagePrev) {
+        if (backImages.size() >= MAX_UNDOS) {
+            backImages.remove(0);
+            backImages.add(imagePrev);
+
+        }
+        else {
+            backImages.add(imagePrev);
+        }
+    }
 
 
 

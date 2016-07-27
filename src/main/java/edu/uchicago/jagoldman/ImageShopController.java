@@ -13,8 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.effect.SepiaTone;
+import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -44,12 +44,13 @@ public class ImageShopController implements Initializable {
     //private Desktop desktop = Desktop.getDesktop();
     private ToggleGroup mToggleGroup = new ToggleGroup();
 
+
     public enum Pen {
-        CIR, SQR, FIL, OTHER;
+        CIR, SQR, FIL, DROP, BUCK;
     }
 
     public enum FilterStyle {
-        SAT, DRK, OTHER;
+        SAT, DRK, LTN, GRY, INV, SEP, DSAT, HUS, OTHER;
     }
 
 
@@ -57,6 +58,7 @@ public class ImageShopController implements Initializable {
     private int penSize = 50;
     private Pen penStyle = Pen.CIR;
     private FilterStyle mFilterStyle = FilterStyle.DRK;
+    private int sliderColorNumber;
 
     @FXML // fx:id="imgView"
     private ImageView imgView; // Value injected by FXMLLoader
@@ -68,6 +70,7 @@ public class ImageShopController implements Initializable {
     private double xPos, yPos, hPos, wPos;
 
     private Color mColor = Color.WHITE;
+    private boolean bSepia = false;
 
     ArrayList<Shape> removeShapes = new ArrayList<>(1000);
 
@@ -97,13 +100,17 @@ public class ImageShopController implements Initializable {
 
             // imgView.setImage(Cc.getInstance().getImg());
 
-            Cc.getInstance().setImageAndRefreshView(SwingFXUtils.toFXImage(bufferedImage, null));
+            Cc.getInstance().setImg(SwingFXUtils.toFXImage(bufferedImage, null));
+            Cc.getInstance().setImageAndRefreshView(Cc.getInstance().getImg());
 
         } catch (IOException ex) {
             Logger.getLogger(ImageShopController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
+    @FXML
+    private Slider sliderColor;
 
 
     @FXML
@@ -131,7 +138,7 @@ public class ImageShopController implements Initializable {
     @FXML
     void mnuReOpenLast(ActionEvent event) {
 
-      //  Cc.getInstance().reOpenLast();
+        Cc.getInstance().reOpenLast();
     }
 
     @FXML
@@ -140,6 +147,30 @@ public class ImageShopController implements Initializable {
 
     @FXML
     void mnuSaveAction(ActionEvent event) {
+        Cc.getInstance().setImgView(this.imgView);
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+        fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            try {
+
+
+
+
+                ImageIO.write(SwingFXUtils.fromFXImage(Cc.getInstance().getImg(),
+                        null), "png", file);
+
+
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
 
     }
 
@@ -147,6 +178,8 @@ public class ImageShopController implements Initializable {
 
     @FXML
     void mnuSaveAsAction(ActionEvent event) {
+        mnuSaveAction(event);
+
 
     }
 
@@ -205,18 +238,46 @@ public class ImageShopController implements Initializable {
     }
 
 
+
     @FXML
     void mnuUndo(ActionEvent event) {
 
         Cc.getInstance().undo();
 
     }
+    @FXML
+    private Button undoButton;
+    @FXML
+    private Button redoButton;
 
 
     @FXML
     void mnuRedo(ActionEvent event) {
         Cc.getInstance().redo();
     }
+
+    @FXML
+    private Button saturateButton;
+    @FXML
+    private Button desaturateButton;
+    @FXML
+    private Button darkenButton;
+    @FXML
+    private Button lightenButton;
+    @FXML
+    private Button invertButton;
+    @FXML
+    private Button grayButton;
+    @FXML
+    private Button hueButton;
+    @FXML
+    private Button sepiaButton;
+    @FXML
+    private ToggleButton bucketButton;
+    @FXML
+    private ToggleButton dropperButton;
+
+
 
 
     //##################################################################
@@ -227,11 +288,17 @@ public class ImageShopController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         //mColor = Color.WHITE;
+        Cc.getInstance().setImgView(this.imgView);
         tgbCircle.setToggleGroup(mToggleGroup);
         tgbSquare.setToggleGroup(mToggleGroup);
         tgbFilter.setToggleGroup(mToggleGroup);
+        dropperButton.setToggleGroup(mToggleGroup);
+        bucketButton.setToggleGroup(mToggleGroup);
         tgbCircle.setSelected(true);
-        cboSome.setValue("Darker");
+//        cboSome.setValue("Darker");
+        undoButton.setOnAction(event -> Cc.getInstance().undo());
+        redoButton.setOnAction(event -> Cc.getInstance().redo());
+
 
         mToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
@@ -243,7 +310,14 @@ public class ImageShopController implements Initializable {
                     penStyle = Pen.SQR;
                 } else if (newValue == tgbFilter) {
                     penStyle = Pen.FIL;
-                } else {
+                }
+                else if (newValue == dropperButton) {
+                    penStyle = Pen.DROP;
+                }
+                else if (newValue == bucketButton) {
+                    penStyle = Pen.BUCK;
+                }
+                else {
                     penStyle = Pen.CIR;
                 }
             }
@@ -253,7 +327,7 @@ public class ImageShopController implements Initializable {
         imgView.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent me) {
-                if (penStyle == Pen.FIL){
+                if (penStyle == Pen.FIL || penStyle == Pen.BUCK || penStyle == Pen.DROP){
                     xPos = (int) me.getX();
                     yPos = (int) me.getY();
                 }
@@ -304,9 +378,66 @@ public class ImageShopController implements Initializable {
 
 
                             );
+                            break;
+                        case LTN:
+                            transformImage = Cc.getInstance().transform(Cc.getInstance().getImg(),
+                                    (x, y, c) -> (x > xPos && x < wPos)
+                                        && (y > yPos && y < hPos) ? c.
+                                            deriveColor(0, 1, 2, 1): c
+                            );
 
 
                             break;
+                        case GRY:
+                            transformImage = Cc.getInstance().transform(Cc.getInstance().getImg(),
+
+                                    (x, y, c) -> (x > xPos && x < wPos)
+                                            && (y > yPos && y < hPos) ? c.grayscale() : c
+                            );
+
+                            break;
+                        case INV:
+
+                            //saturate
+                            transformImage = Cc.getInstance().transform(Cc.getInstance().getImg(),
+                                    (x, y, c) -> (x > xPos && x < wPos)
+                                            && (y > yPos && y < hPos) ?  c.invert(): c
+
+
+                            );
+
+
+                            break;
+                        case SEP:
+                            if (bSepia == false) {
+                            bSepia = true;
+                            SepiaTone sepiaTone = new SepiaTone(.7);
+                            Cc.getInstance().getImgView().setEffect(sepiaTone);}
+                            else {
+                                Cc.getInstance().getImgView().setEffect(null);
+                                bSepia = false;
+                            }
+                            transformImage = Cc.getInstance().getImg();
+
+
+                            break;
+                        case DSAT:
+                            transformImage = Cc.getInstance().transform(Cc.getInstance().getImg(),
+                                    (x, y, c) -> (x > xPos && x < wPos)
+                                            && (y > yPos && y < hPos) ?  c.deriveColor(0, .75, 1.0, 1.0): c
+
+
+                            );
+                            break;
+                        case HUS:
+                            transformImage = Cc.getInstance().transform(Cc.getInstance().getImg(),
+                                    (x, y, c) -> (x > xPos && x < wPos)
+                                            && (y > yPos && y < hPos) ?  c.deriveColor(sliderColorNumber, 1, 1, 1) : c
+
+
+                            );
+                            break;
+
 
                         default:
                             //make darker
@@ -322,7 +453,32 @@ public class ImageShopController implements Initializable {
 
 
                     Cc.getInstance().setImageAndRefreshView(transformImage);
-                } else {
+                }
+                else if (penStyle == Pen.DROP) {
+                    xPos = me.getX();
+                    yPos = me.getY();
+                    Color pixelColor;
+                    PixelReader pixelReader = Cc.getInstance().getImg().getPixelReader();
+                    pixelColor = pixelReader.getColor(((int) xPos),((int) yPos));
+
+                    cpkColor.setValue(pixelColor);
+                    mColor = cpkColor.getValue();
+
+                }
+                else if (penStyle == Pen.BUCK) {
+                    xPos = ((int)me.getX());
+                    yPos = ((int)me.getY());
+                    Image transformedImage;
+                    transformedImage = Cc.getInstance().transform(Cc.getInstance().getImg(),
+                            (x, y, c) -> (x == xPos && y == yPos) ?  mColor : c);
+
+                    Cc.getInstance().setImageAndRefreshView(transformedImage);
+
+
+                }
+
+
+                else {
                     //do nothing right now
 
                 }
@@ -335,7 +491,7 @@ public class ImageShopController implements Initializable {
             @Override
             public void handle(MouseEvent me) {
 
-                if (penStyle == Pen.FIL){
+                if (penStyle == Pen.FIL || penStyle == Pen.BUCK || penStyle == Pen.DROP){
                     me.consume();
                     return;
                 }
@@ -392,40 +548,23 @@ public class ImageShopController implements Initializable {
                 penSize = (int) Math.round(temp);
             }
         });
-
-
-        cboSome.getItems().addAll(
-                "Darker",
-                "Saturate"
-
-        );
-
-
-        cboSome.valueProperty().addListener(new ChangeListener<String>() {
+        sliderColor.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                switch (newValue){
-                    case "Saturate":
-                        mFilterStyle = FilterStyle.SAT;
-                        break;
-
-                    case "Darker":
-                        mFilterStyle = FilterStyle.DRK;
-                        break;
-
-                    default:
-                        mFilterStyle = FilterStyle.DRK;
-                        break;
-
-                }
+            public void changed(ObservableValue<? extends Number> observable2, Number oldValue2, Number newValue2) {
+                double temp2 = (Double) newValue2;
+                sliderColorNumber = (int) Math.round(temp2);
             }
         });
 
 
-
-
-
-
+        saturateButton.setOnAction(event -> mFilterStyle = FilterStyle.SAT);
+        desaturateButton.setOnAction(event -> mFilterStyle = FilterStyle.DSAT);
+        lightenButton.setOnAction(event -> mFilterStyle = FilterStyle.LTN);
+        darkenButton.setOnAction(event -> mFilterStyle = FilterStyle.DRK);
+        invertButton.setOnAction(event -> mFilterStyle = FilterStyle.INV);
+        grayButton.setOnAction(event -> mFilterStyle = FilterStyle.GRY);
+        hueButton.setOnAction(event -> mFilterStyle = FilterStyle.HUS);
+        sepiaButton.setOnAction(event -> mFilterStyle = FilterStyle.SEP);
 
 
 
@@ -446,6 +585,8 @@ public class ImageShopController implements Initializable {
 //    Cc.getInstance().getImgView().setImage(image);
 //
 //    Cc.getInstance().getSaturationStage().close();
+
+
 
 
 }

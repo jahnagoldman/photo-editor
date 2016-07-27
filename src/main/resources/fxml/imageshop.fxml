@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -8,70 +9,303 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="862.0" prefWidth="1328.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.uchicago.jagoldman.ImageShopController">
-  <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" onAction="#mnuOpenAction" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#mnuCloseAction" text="Close" />
-            <MenuItem mnemonicParsing="false" onAction="#mnuSaveAction" text="Save" />
-            <MenuItem mnemonicParsing="false" onAction="#mnuSaveAsAction" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-                  <MenuItem mnemonicParsing="false" onAction="#mnuReOpenLast" text="re-open last" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" onAction="#mnuQuitAction" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Filter">
-          <items>
-            <MenuItem mnemonicParsing="false" onAction="#mnuUndo" text="Undo" />
-            <MenuItem mnemonicParsing="false" onAction="#mnuRedo" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-                  <MenuItem mnemonicParsing="false" onAction="#mnuSaturate" text="Saturate" />
-                  <MenuItem mnemonicParsing="false" onAction="#mnuGrayscale" text="GrayScale" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-      <ToolBar prefHeight="40.0" prefWidth="1328.0">
-         <items>
-            <ColorPicker fx:id="cpkColor" />
+<HBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.uchicago.jagoldman.ImageShopController">
+   <children>
+      <VBox fx:id="vbox2" prefHeight="859.0" prefWidth="60.0" spacing="10.0">
+         <children>
+            <Label prefHeight="53.0" prefWidth="50.0" text="Image Effects" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="saturateButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="50.0" text="Saturate" textAlignment="CENTER">
+               <font>
+                  <Font size="9.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="29.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/saturate.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Saturate" />
+               </tooltip>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Button fx:id="lightenButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="50.0" text="Button">
+               <tooltip>
+                  <Tooltip text="Lighten" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/brighten.jpeg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Button fx:id="invertButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="50.0" text="Button">
+               <tooltip>
+                  <Tooltip text="Invert Colors" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/invert.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Button fx:id="hueButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="50.0" text="Button">
+               <tooltip>
+                  <Tooltip text="Hue Shift" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/hueshift.png" />
+                     </image></ImageView>
+               </graphic>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Slider fx:id="sliderColor" prefHeight="53.0" prefWidth="68.0">
+               <effect>
+                  <DropShadow />
+               </effect>
+               <tooltip>
+                  <Tooltip text="Slider for Hue Shift" />
+               </tooltip></Slider>
+            <Label prefHeight="37.0" prefWidth="49.0" text="Pen Effects" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></Label>
             <Label text="Pen-Size" />
-            <Slider fx:id="sldSize" value="50.0" />
-            <Label text="Filter" />
-            <ComboBox fx:id="cboSome" prefWidth="150.0" />
-            <ToggleButton fx:id="tgbFilter" mnemonicParsing="false" text="Apply-Filter" />
-            <ToggleButton fx:id="tgbCircle" mnemonicParsing="false" text="Circle" />
-            <ToggleButton fx:id="tgbSquare" mnemonicParsing="false" text="Square" />
-         </items>
-      </ToolBar>
-      <ScrollPane prefHeight="835.0" prefWidth="1328.0">
-        <content>
-          <AnchorPane fx:id="ancRoot" minHeight="0.0" minWidth="0.0" prefHeight="830.0" prefWidth="1329.0">
-               <children>
-                  <ImageView fx:id="imgView" fitHeight="816.0" fitWidth="1328.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
-  </children>
-</VBox>
+            <ToggleButton fx:id="tgbCircle" mnemonicParsing="false" prefHeight="26.0" prefWidth="63.0" text="Circle">
+               <effect>
+                  <DropShadow />
+               </effect></ToggleButton>
+            <ColorPicker fx:id="cpkColor" prefHeight="27.0" prefWidth="58.0">
+               <effect>
+                  <DropShadow />
+               </effect></ColorPicker>
+            <Label text="Other Tools" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <ToggleButton fx:id="dropperButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="52.0" prefWidth="50.0" text="ToggleButton">
+               <graphic>
+                  <ImageView fitHeight="33.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/dropper.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Color Dropper" />
+               </tooltip>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </ToggleButton>
+            <Button fx:id="undoButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="52.0" prefWidth="50.0" text="Undo">
+               <font>
+                  <Font size="12.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="34.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/undo.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Undo" />
+               </tooltip>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+         </children>
+      </VBox>
+      <VBox prefHeight="859.0" prefWidth="68.0" spacing="10.0">
+         <children>
+            <Label prefHeight="53.0" prefWidth="46.0" />
+            <Button fx:id="desaturateButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="50.0" text="Button">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/desaturate.jpeg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Desaturate" />
+               </tooltip>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Button fx:id="darkenButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="50.0" text="Button">
+               <tooltip>
+                  <Tooltip fx:id="Darken" text="Darken" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/darken.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Button fx:id="grayButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="50.0" text="Button">
+               <tooltip>
+                  <Tooltip text="Grayscale" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/gray.jpg" />
+                     </image></ImageView>
+               </graphic>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <Button fx:id="sepiaButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="50.0" text="Button">
+               <tooltip>
+                  <Tooltip text="Switch Sepia/Normal" />
+               </tooltip>
+               <graphic>
+                  <ImageView fitHeight="36.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/sepia.jpeg" />
+                     </image></ImageView>
+               </graphic>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+            <ToggleButton fx:id="tgbFilter" mnemonicParsing="false" prefHeight="53.0" prefWidth="50.0" text="Apply Effect" wrapText="true">
+               <font>
+                  <Font size="11.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </ToggleButton>
+            <Label prefHeight="38.0" prefWidth="34.0" />
+            <Slider fx:id="sldSize">
+               <effect>
+                  <DropShadow />
+               </effect></Slider>
+            <ToggleButton fx:id="tgbSquare" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="Square">
+               <effect>
+                  <DropShadow />
+               </effect></ToggleButton>
+            <Label prefHeight="8.0" prefWidth="34.0" />
+            <Label prefHeight="44.0" prefWidth="61.0" />
+            <ToggleButton fx:id="bucketButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="52.0" prefWidth="50.0" text="ToggleButton">
+               <graphic>
+                  <ImageView fitHeight="33.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/bucket.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Paint Bucket" />
+               </tooltip>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </ToggleButton>
+            <Button fx:id="redoButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="52.0" prefWidth="50.0" text="Button">
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/redo.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Redo" />
+               </tooltip>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" prefHeight="859.0" prefWidth="1101.0">
+        <children>
+          <MenuBar VBox.vgrow="NEVER">
+            <menus>
+              <Menu mnemonicParsing="false" text="File">
+                <items>
+                  <MenuItem mnemonicParsing="false" text="New" />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuOpenAction" text="Open…" />
+                  <Menu mnemonicParsing="false" text="Open Recent" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuCloseAction" text="Close" />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuSaveAction" text="Save" />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuSaveAsAction" text="Save As…" />
+                  <MenuItem mnemonicParsing="false" text="Revert" />
+                        <MenuItem mnemonicParsing="false" onAction="#mnuReOpenLast" text="re-open last" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Preferences…" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuQuitAction" text="Quit" />
+                </items>
+              </Menu>
+              <Menu mnemonicParsing="false" text="Filter">
+                <items>
+                  <MenuItem mnemonicParsing="false" onAction="#mnuUndo" text="Undo" />
+                  <MenuItem mnemonicParsing="false" onAction="#mnuRedo" text="Redo" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Cut" />
+                  <MenuItem mnemonicParsing="false" text="Copy" />
+                  <MenuItem mnemonicParsing="false" text="Paste" />
+                  <MenuItem mnemonicParsing="false" text="Delete" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Select All" />
+                  <MenuItem mnemonicParsing="false" text="Unselect All" />
+                        <MenuItem mnemonicParsing="false" onAction="#mnuSaturate" text="Saturate" />
+                        <MenuItem mnemonicParsing="false" onAction="#mnuGrayscale" text="GrayScale" />
+                </items>
+              </Menu>
+              <Menu mnemonicParsing="false" text="Help">
+                <items>
+                  <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+                </items>
+              </Menu>
+            </menus>
+          </MenuBar>
+            <ScrollPane prefHeight="835.0" prefWidth="1328.0">
+              <content>
+                <AnchorPane fx:id="ancRoot" minHeight="0.0" minWidth="0.0" prefHeight="830.0" prefWidth="1205.0">
+                     <children>
+                        <ImageView fx:id="imgView" fitHeight="816.0" fitWidth="1328.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+        </children>
+      </VBox>
+   </children>
+</HBox>
