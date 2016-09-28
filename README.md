@@ -3,7 +3,8 @@ This is a photo editing application in Java using JavaFX and FXML that I created
 The user may upload a photo and then make edits to this photo as they wish. 
 
 ## About
-- The application includes a toolbar featuring several image effects as follows:
+The application includes a toolbar, which includes all of the following:
+* Image Effects:
   - Saturate
   - Desaturate
   - Lighten
@@ -12,10 +13,9 @@ The user may upload a photo and then make edits to this photo as they wish.
   - Grayscale
   - Hue Shift
   - Sepia Tone.
-
-
-These are usable by selecting the effect you wish to use, clicking the "Apply Effect" button, 
-and clicking and dragging the mouse over the area you would like to change (i.e. a square).
+  
+(These are usable by selecting the effect you wish to use, clicking the "Apply Effect" button, 
+and clicking and dragging the mouse over the area you would like to change (i.e. a square).)
 
 * Undo/Redo Buttons: All actions can be undone/redone up to 100 times, except for Sepia Tone, which can be switched back and forth by pressing the Sepia Tone button.
 
