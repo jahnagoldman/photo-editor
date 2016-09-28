@@ -1,17 +1,17 @@
 # Photo Editor
 This is a photo editing application in Java using JavaFX and FXML that I created in my Advanced Java Programming course.
-It's meant for the user to upload any photo they wish to then make edits
+The user may upload a photo and then make edits to this photo as they wish. 
 
 ## About
-* The application includes a toolbar featuring several image effects as follows:
-- Saturate
-- Desaturate
-- Lighten
-- Darken 
-- Color Inversion
-- Grayscale
-- Hue Shift
-- Sepia Tone.
+- The application includes a toolbar featuring several image effects as follows:
+1. Saturate
+2. Desaturate
+3. Lighten
+4. Darken 
+5. Color Inversion
+6. Grayscale
+7. Hue Shift
+8. Sepia Tone.
 These are usable by selecting the effect you wish to use, clicking the "Apply Effect" button, 
 and clicking and dragging the mouse over the area you would like to change (i.e. a square).
 
