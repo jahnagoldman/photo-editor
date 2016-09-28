@@ -12,6 +12,8 @@ The user may upload a photo and then make edits to this photo as they wish.
   - Grayscale
   - Hue Shift
   - Sepia Tone.
+
+
 These are usable by selecting the effect you wish to use, clicking the "Apply Effect" button, 
 and clicking and dragging the mouse over the area you would like to change (i.e. a square).
 
